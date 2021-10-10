@@ -3,7 +3,7 @@ import torch
 ROOT_PATH = ''#../input'
 OUTPUT_PATH = ''#../outputs'
 # learning parameters
-BATCH_SIZE = 64
+BATCH_SIZE = 4
 LR = 0.001
 EPOCHS = 30
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

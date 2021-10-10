@@ -26,32 +26,11 @@ class FaceKeypointDataset(Dataset):
 
     def __len__(self):
         return len(self.data)
-
+    '''
     def __getitem__(self, index):
-        s=f"{self.path}/{self.data.iloc[index][0]}"
-        s1=s[(s.find( ";"))+1:]
-        s=s[0:(s.find( ";"))]
-        s="F:/key_points"+s
-        print(s)
-        image = cv2.imread(s)#f"{self.path}/{self.data.iloc[index][0]}")
- #       cv2.imshow("1", image)
-#        key=cv2.waitKey(27)
-
-        k=[]*136
-        c=0
-        i=0
-        while(i<len(s1)):
-            if(s1[i]==";"):
-                k[c]=int(s1[0:i])
-                s1=s1[0:i+1]
-                i=0
-                c+=1
-        '''while(s1.find(";")>=0):
-            k[c]=int(s1[0:s.find(";")])
-            s1=s1[s.find(";")+1:]
-            c+=1
-            print(k[c])'''
-
+        for i in range(len(self.data.iloc)):
+            print(f"{self.path}/{self.data.iloc[index][0]}")
+        image = cv2.imread(f"{self.path}/{self.data.iloc[index][0]}")
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         orig_h, orig_w, channel = image.shape
         # resize the image into `resize` defined above
@@ -62,7 +41,6 @@ class FaceKeypointDataset(Dataset):
         image = np.transpose(image, (2, 0, 1))
         # get the keypoints
         keypoints = self.data.iloc[index][1:]
-        keypoints=k
         keypoints = np.array(keypoints, dtype='float32')
         # reshape the keypoints
         keypoints = keypoints.reshape(-1, 2)
@@ -71,6 +49,61 @@ class FaceKeypointDataset(Dataset):
         return {
             'image': torch.tensor(image, dtype=torch.float),
             'keypoints': torch.tensor(keypoints, dtype=torch.float),
+        }
+
+    '''
+    def __getitem__(self, index):
+        img=[]
+        kk=[]
+        f=open("training/training_frames_keypoints.csv", 'r')
+        count=0
+        for ss in f:
+            s=ss
+            print(s)
+            if(count!=0):
+                s1 = s[(s.find(";")) + 1:]
+                s = s[0:(s.find(";"))]
+                s = "F:/key_points/training/training/" + s
+
+                # print(s)
+                image = s
+                image = cv2.imread(image)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                orig_h, orig_w, channel = image.shape
+                # resize the image into `resize` defined above
+                image = cv2.resize(image, (self.resize, self.resize))
+                # again reshape to add grayscale channel format
+                image = image / 255.0
+                # transpose for getting the channel size to index 0
+                image = np.transpose(image, (2, 0, 1))
+                img.append(image)
+                #       cv2.imshow("1", image)
+                #        key=cv2.waitKey(27)
+
+                k = []
+                c = 0
+                i = 0
+
+                while (s1.find(';') >= 0):
+
+                    t=int(float(s1[0:s1.find(';')]))
+                    k.append(t)
+                    s1 = s1[s1.find(';') + 1:]
+                    c += 1
+
+                t = int(float(s1))
+                k.append(t)
+                kk.append(k)
+
+            count+=1
+
+
+
+
+
+        return {
+            'image': torch.tensor(image, dtype=torch.float),
+            'keypoints': torch.tensor(k, dtype=torch.float),
         }
 
 
