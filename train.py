@@ -97,5 +97,5 @@ torch.save({
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
             'loss': criterion,
-            }, f"{config.OUTPUT_PATH}/model.pth")
+            }, "F:/key_points/model.pth")
 print('DONE TRAINING')

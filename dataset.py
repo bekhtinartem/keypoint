@@ -26,32 +26,7 @@ class FaceKeypointDataset(Dataset):
 
     def __len__(self):
         return len(self.data)
-    '''
-    def __getitem__(self, index):
-        for i in range(len(self.data.iloc)):
-            print(f"{self.path}/{self.data.iloc[index][0]}")
-        image = cv2.imread(f"{self.path}/{self.data.iloc[index][0]}")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        orig_h, orig_w, channel = image.shape
-        # resize the image into `resize` defined above
-        image = cv2.resize(image, (self.resize, self.resize))
-        # again reshape to add grayscale channel format
-        image = image / 255.0
-        # transpose for getting the channel size to index 0
-        image = np.transpose(image, (2, 0, 1))
-        # get the keypoints
-        keypoints = self.data.iloc[index][1:]
-        keypoints = np.array(keypoints, dtype='float32')
-        # reshape the keypoints
-        keypoints = keypoints.reshape(-1, 2)
-        # rescale keypoints according to image resize
-        keypoints = keypoints * [self.resize / orig_w, self.resize / orig_h]
-        return {
-            'image': torch.tensor(image, dtype=torch.float),
-            'keypoints': torch.tensor(keypoints, dtype=torch.float),
-        }
 
-    '''
     def __getitem__(self, index):
         img=[]
         kk=[]
